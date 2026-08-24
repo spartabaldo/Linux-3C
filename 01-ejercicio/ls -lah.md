@@ -8,3 +8,6 @@ tabla de permisos
 | readme   | -rw-rw-r-- | 664     |
 
 ![alt text](<Pasted image 20260819085252.png>)
+
+
+https://github.com/spartabaldo/Linux-3C/blob/main/01-ejercicio/ls%20-lah.md

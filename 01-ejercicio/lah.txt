@@ -1,0 +1,4 @@
+LIBRO DEL ALUMNO — una lección por archivo.
+Nombre: JC-CPP-B1-S03-L05-LIBRO.pdf
+9 páginas: apertura · vocabulario de sintaxis · código en contexto · concepto 1 ·
+concepto 2 · lectura de errores y máquina · lenguaje del salón · repaso y 'ahora puedo' y una pagina que solo sirva para que el alumno haga notas.

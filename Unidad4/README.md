@@ -11,6 +11,13 @@
 
 Antes de cambiar algo guarda un respaldo, y si falla a la mitad regresa todo como estaba.
 
+## Ver la página en línea
+
+Una copia de la página está publicada con GitHub Pages:
+**https://spartabaldo.github.io/Linux-3C/Unidad4/pagina/**
+
+Es la misma página que sirve nginx en el servidor, generada por `dns.sh`. La copia en línea se puede abrir desde cualquier lugar; el servidor real (DNS, nginx y SSH) solo responde dentro de la red de la escuela.
+
 ## Requisitos
 
 - Kali Linux (o Debian/Ubuntu) con systemd y NetworkManager.

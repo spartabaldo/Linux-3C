@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Comandos de Linux · 3C</title>
+<style>
+:root{
+  --papel:#E6ECF3; --tinta:#182544; --kali:#2F6FDE; --gris:#5F6E8C;
+  --marca:#F3C64F; --linea:#C3CEDD;
+  --mono:"JetBrains Mono","DejaVu Sans Mono","Noto Sans Mono",ui-monospace,monospace;
+  --sans:"Cantarell","Noto Sans","DejaVu Sans",system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html{background:var(--papel)}
+body{margin:0;color:var(--tinta);font:17px/1.55 var(--sans);background:var(--papel)}
+.marco{max-width:1040px;margin:0 auto;padding:0 20px 80px}
+header{padding:64px 0 40px;border-bottom:2px solid var(--tinta)}
+.quien{font:500 14px/1.4 var(--mono);color:var(--gris);margin:0 0 28px}
+.quien b{color:var(--kali);font-weight:600}
+h1{font-size:clamp(44px,8vw,96px);line-height:.95;letter-spacing:-.035em;font-weight:800;margin:0 0 36px;max-width:12ch}
+.prompt{display:flex;align-items:center;gap:12px;background:var(--tinta);color:var(--papel);padding:16px 20px;border-radius:6px;font:400 clamp(16px,2.4vw,22px)/1.3 var(--mono)}
+.prompt span{color:var(--marca);white-space:nowrap}
+.prompt input{flex:1;min-width:0;background:none;border:0;color:var(--papel);font:inherit;caret-color:var(--marca)}
+.prompt input::placeholder{color:#7F8DAD}
+.prompt input:focus{outline:none}
+.prompt:focus-within{box-shadow:0 0 0 3px var(--kali)}
+.resumen{margin:14px 0 0;color:var(--gris);font-size:15px}
+section{display:grid;grid-template-columns:200px 1fr;gap:0 40px;padding:44px 0 8px;border-bottom:1px solid var(--linea)}
+section h2{margin:0;font-size:22px;line-height:1.2;font-weight:600;position:sticky;top:20px;align-self:start}
+section h2 small{display:block;font:700 64px/1 var(--sans);color:var(--kali);letter-spacing:-.04em;margin-bottom:6px}
+ol{list-style:none;margin:0;padding:0}
+li{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:4px 24px;padding:16px 0;border-top:1px solid var(--linea)}
+li:first-child{border-top:0;padding-top:4px}
+.cmd{font:600 16px/1.4 var(--mono);color:var(--tinta);background:none;border:0;padding:0;text-align:left;cursor:copy;align-self:start}
+.cmd mark{background:linear-gradient(transparent 55%,var(--marca) 55%);color:inherit;padding:0 2px}
+.cmd:focus-visible{outline:2px solid var(--kali);outline-offset:3px}
+.que{margin:0}
+code.ej{grid-column:2;display:block;font:400 14px/1.5 var(--mono);color:#3A4C74;overflow-x:auto;white-space:pre}
+.oculto{display:none}
+.vacio{padding:40px 0;color:var(--gris)}
+footer{padding-top:32px;color:var(--gris);font-size:15px}
+footer code{font-family:var(--mono);color:var(--tinta)}
+.aviso{position:fixed;left:50%;bottom:24px;transform:translateX(-50%) translateY(20px);opacity:0;background:var(--tinta);color:var(--papel);padding:10px 16px;border-radius:6px;font:14px var(--mono);transition:.2s}
+.aviso.ver{opacity:1;transform:translateX(-50%)}
+@media (max-width:720px){
+  section{grid-template-columns:1fr}
+  section h2{position:static;margin-bottom:16px}
+  section h2 small{font-size:44px}
+  li{grid-template-columns:1fr}
+  code.ej{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){.aviso{transition:none}}
+</style>
+</head>
+<body>
+<div class="marco">
+<header>
+<p class="quien"><b>spartabaldo@spartabaldo.linux</b> · servido desde 10.10.24.199 · generado el 11/11/2026 19:30</p>
+<h1>Lo que vimos en la terminal</h1>
+<label class="prompt" for="buscar"><span>$ grep</span>
+<input id="buscar" type="search" autocomplete="off" spellcheck="false" placeholder="escribe un comando o una palabra, p. ej. permisos"></label>
+<p class="resumen" id="resumen">131 comandos en 4 unidades. Haz clic en cualquiera para copiarlo.</p>
+</header>
+<section><h2><small>1</small>Terminal y archivos</h2><ol>
+<li><button class="cmd" type="button" data-copiar="pwd">pwd</button><p class="que">Muestra la ruta de la carpeta donde estás parado.</p><code class="ej">pwd</code></li>
+<li><button class="cmd" type="button" data-copiar="whoami">whoami</button><p class="que">Dice con qué usuario tienes la sesión abierta.</p><code class="ej">whoami</code></li>
+<li><button class="cmd" type="button" data-copiar="ls">ls</button><p class="que">Lista lo que hay en la carpeta actual.</p><code class="ej">ls</code></li>
+<li><button class="cmd" type="button" data-copiar="ls -lah docs">ls -lah</button><p class="que">Lista todo, incluidos ocultos, con permisos, dueño y tamaño legible.</p><code class="ej">ls -lah docs</code></li>
+<li><button class="cmd" type="button" data-copiar="cd ~/laboratorio-cli">cd</button><p class="que">Cambia de carpeta. Con .. sube un nivel y con ~ vuelve a tu home.</p><code class="ej">cd ~/laboratorio-cli</code></li>
+<li><button class="cmd" type="button" data-copiar="tree ~/laboratorio-cli">tree</button><p class="que">Dibuja una carpeta y todo lo que tiene adentro en forma de árbol.</p><code class="ej">tree ~/laboratorio-cli</code></li>
+<li><button class="cmd" type="button" data-copiar="mkdir -p ~/laboratorio-cli/{docs,src,logs}">mkdir -p</button><p class="que">Crea carpetas, incluidas las intermedias que falten. Con llaves crea varias de un jalón.</p><code class="ej">mkdir -p ~/laboratorio-cli/{docs,src,logs}</code></li>
+<li><button class="cmd" type="button" data-copiar="touch docs/{guia,notas}.md src/{main,test}.py README.txt">touch</button><p class="que">Crea archivos vacíos (o actualiza su fecha si ya existen).</p><code class="ej">touch docs/{guia,notas}.md src/{main,test}.py README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="cp -r docs docs_respaldo">cp</button><p class="que">Copia archivos. Con -r copia carpetas completas.</p><code class="ej">cp -r docs docs_respaldo</code></li>
+<li><button class="cmd" type="button" data-copiar="mv notas.md apuntes.md">mv</button><p class="que">Mueve o renombra archivos y carpetas.</p><code class="ej">mv notas.md apuntes.md</code></li>
+<li><button class="cmd" type="button" data-copiar="rm -r docs_respaldo">rm</button><p class="que">Borra archivos. Con -r borra carpetas; no hay papelera, así que cuidado.</p><code class="ej">rm -r docs_respaldo</code></li>
+<li><button class="cmd" type="button" data-copiar="rmdir carpeta_vacia">rmdir</button><p class="que">Borra una carpeta solo si está vacía.</p><code class="ej">rmdir carpeta_vacia</code></li>
+<li><button class="cmd" type="button" data-copiar="ln -s ~/laboratorio-cli/logs ~/logs">ln -s</button><p class="que">Crea un acceso directo (enlace simbólico) a otro archivo o carpeta.</p><code class="ej">ln -s ~/laboratorio-cli/logs ~/logs</code></li>
+<li><button class="cmd" type="button" data-copiar="file README.txt">file</button><p class="que">Dice qué tipo de archivo es, sin importar su extensión.</p><code class="ej">file README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="stat README.txt">stat</button><p class="que">Muestra todos los datos de un archivo: tamaño, permisos y fechas.</p><code class="ej">stat README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="printf 'error\nok\nerror\n' &gt; logs/app.log">printf + &gt;</button><p class="que">Escribe texto con saltos de línea y lo manda a un archivo, sobrescribiéndolo.</p><code class="ej">printf 'error\nok\nerror\n' &gt; logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="echo 'ok' &gt;&gt; logs/app.log">&gt;&gt;</button><p class="que">Agrega texto al final de un archivo sin borrar lo que ya tenía.</p><code class="ej">echo 'ok' &gt;&gt; logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="ls carpeta_que_no_existe 2&gt; errores.txt">2&gt;</button><p class="que">Manda los mensajes de error a un archivo aparte.</p><code class="ej">ls carpeta_que_no_existe 2&gt; errores.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="cat logs/app.log | grep error">| (tubería)</button><p class="que">Pasa la salida de un comando como entrada del siguiente.</p><code class="ej">cat logs/app.log | grep error</code></li>
+<li><button class="cmd" type="button" data-copiar="mkdir pruebas &amp;&amp; cd pruebas">&amp;&amp; y ||</button><p class="que">&amp;&amp; corre el segundo comando si el primero salió bien; || solo si falló.</p><code class="ej">mkdir pruebas &amp;&amp; cd pruebas</code></li>
+<li><button class="cmd" type="button" data-copiar="nano logs/app.log">nano</button><p class="que">Editor de texto dentro de la terminal. Ctrl+O guarda, Ctrl+X sale.</p><code class="ej">nano logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="cat logs/app.log">cat</button><p class="que">Imprime el contenido de un archivo en la terminal.</p><code class="ej">cat logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="less /var/log/syslog">less</button><p class="que">Abre un archivo largo para leerlo por partes. q sale, / busca.</p><code class="ej">less /var/log/syslog</code></li>
+<li><button class="cmd" type="button" data-copiar="tail -n 20 logs/app.log">head y tail</button><p class="que">Muestran las primeras o las últimas líneas de un archivo.</p><code class="ej">tail -n 20 logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo tail -f /var/log/nginx/access.log">tail -f</button><p class="que">Sigue un archivo en vivo y muestra las líneas nuevas conforme llegan.</p><code class="ej">sudo tail -f /var/log/nginx/access.log</code></li>
+<li><button class="cmd" type="button" data-copiar="wc -l logs/app.log">wc</button><p class="que">Cuenta líneas, palabras y caracteres.</p><code class="ej">wc -l logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="grep -n error logs/app.log">grep</button><p class="que">Busca texto dentro de archivos. -i ignora mayúsculas, -r busca en carpetas, -n da el número de línea.</p><code class="ej">grep -n error logs/app.log</code></li>
+<li><button class="cmd" type="button" data-copiar="sort logs/app.log | uniq -c">sort y uniq</button><p class="que">Ordenan líneas y quitan las repetidas. uniq -c además las cuenta.</p><code class="ej">sort logs/app.log | uniq -c</code></li>
+<li><button class="cmd" type="button" data-copiar="cut -d: -f1 /etc/passwd">cut</button><p class="que">Saca una columna de cada línea usando un separador.</p><code class="ej">cut -d: -f1 /etc/passwd</code></li>
+<li><button class="cmd" type="button" data-copiar="diff guia.md notas.md">diff</button><p class="que">Compara dos archivos y muestra en qué líneas son distintos.</p><code class="ej">diff guia.md notas.md</code></li>
+<li><button class="cmd" type="button" data-copiar="find ~ -name '*.sh'">find</button><p class="que">Busca archivos por nombre, tipo, tamaño o fecha.</p><code class="ej">find ~ -name '*.sh'</code></li>
+<li><button class="cmd" type="button" data-copiar="chmod 775 logs &amp;&amp; chmod 664 README.txt">chmod</button><p class="que">Cambia permisos. 7 = rwx, 6 = rw-, 5 = r-x, 4 = r--; en orden dueño, grupo, otros.</p><code class="ej">chmod 775 logs &amp;&amp; chmod 664 README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="chmod g-w README.txt">chmod u+x</button><p class="que">Cambia permisos con letras: u dueño, g grupo, o otros; + da y - quita.</p><code class="ej">chmod g-w README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo chown spartabaldo:spartabaldo README.txt">chown</button><p class="que">Cambia el dueño (y el grupo) de un archivo.</p><code class="ej">sudo chown spartabaldo:spartabaldo README.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="umask">umask</button><p class="que">Muestra qué permisos se le quitan por defecto a los archivos nuevos.</p><code class="ej">umask</code></li>
+<li><button class="cmd" type="button" data-copiar="man ls">man</button><p class="que">Abre el manual de cualquier comando. q para salir.</p><code class="ej">man ls</code></li>
+<li><button class="cmd" type="button" data-copiar="ls --help">--help</button><p class="que">Muestra una ayuda corta del comando, más rápida que man.</p><code class="ej">ls --help</code></li>
+<li><button class="cmd" type="button" data-copiar="history | tail">history</button><p class="que">Lista los comandos que has escrito. !número repite uno.</p><code class="ej">history | tail</code></li>
+<li><button class="cmd" type="button" data-copiar="clear">clear</button><p class="que">Limpia la pantalla de la terminal (o Ctrl+L).</p><code class="ej">clear</code></li>
+</ol></section>
+<section><h2><small>2</small>Scripts en bash</h2><ol>
+<li><button class="cmd" type="button" data-copiar="#!/bin/bash">#!/bin/bash</button><p class="que">Primera línea del script: le dice al sistema qué intérprete lo ejecuta.</p><code class="ej">#!/bin/bash</code></li>
+<li><button class="cmd" type="button" data-copiar="chmod +x saludo.sh &amp;&amp; ./saludo.sh">chmod +x y ./</button><p class="que">Le da permiso de ejecución al script y luego lo corre desde la carpeta actual.</p><code class="ej">chmod +x saludo.sh &amp;&amp; ./saludo.sh</code></li>
+<li><button class="cmd" type="button" data-copiar="bash saludo.sh">bash script.sh</button><p class="que">Corre un script sin darle permiso de ejecución.</p><code class="ej">bash saludo.sh</code></li>
+<li><button class="cmd" type="button" data-copiar="bash -x saludo.sh">bash -n y -x</button><p class="que">-n revisa la sintaxis sin ejecutar; -x muestra cada línea conforme corre.</p><code class="ej">bash -x saludo.sh</code></li>
+<li><button class="cmd" type="button" data-copiar="echo &quot;Hola $nombre! Bienvenido a Linux!&quot;">echo</button><p class="que">Imprime texto o el valor de una variable.</p><code class="ej">echo &quot;Hola $nombre! Bienvenido a Linux!&quot;</code></li>
+<li><button class="cmd" type="button" data-copiar="nombre=&quot;Jonathan&quot;; echo $nombre">variable=valor</button><p class="que">Guarda un valor. Sin espacios alrededor del =, y se lee con $.</p><code class="ej">nombre=&quot;Jonathan&quot;; echo $nombre</code></li>
+<li><button class="cmd" type="button" data-copiar="hoy=$(date +%d/%m/%Y)">$(comando)</button><p class="que">Guarda en una variable lo que imprime un comando.</p><code class="ej">hoy=$(date +%d/%m/%Y)</code></li>
+<li><button class="cmd" type="button" data-copiar="read -p &quot;¿Cuál es tu nombre? &quot; nombre">read -p</button><p class="que">Pide un dato al usuario mostrando un mensaje y lo guarda en una variable.</p><code class="ej">read -p &quot;¿Cuál es tu nombre? &quot; nombre</code></li>
+<li><button class="cmd" type="button" data-copiar="base=${base:-0}">${var:-0}</button><p class="que">Usa el valor de la variable o, si viene vacía, un valor por defecto.</p><code class="ej">base=${base:-0}</code></li>
+<li><button class="cmd" type="button" data-copiar="area=$((base*altura))">$(( ))</button><p class="que">Hace operaciones aritméticas con enteros.</p><code class="ej">area=$((base*altura))</code></li>
+<li><button class="cmd" type="button" data-copiar="./listado.sh /home/spartabaldo/weas/Scripts">$0, $1 y $#</button><p class="que">$0 es el nombre del script, $1 el primer argumento y $# cuántos argumentos llegaron.</p><code class="ej">./listado.sh /home/spartabaldo/weas/Scripts</code></li>
+<li><button class="cmd" type="button" data-copiar="ls /noexiste; echo $?">$?</button><p class="que">Guarda cómo terminó el último comando: 0 es que salió bien.</p><code class="ej">ls /noexiste; echo $?</code></li>
+<li><button class="cmd" type="button" data-copiar="exit 1">exit</button><p class="que">Termina el script y devuelve un código; 0 es éxito.</p><code class="ej">exit 1</code></li>
+<li><button class="cmd" type="button" data-copiar="mostrar_ayuda(){ echo &quot;Uso: $0 &lt;directorio_origen&gt;&quot;; }">función()</button><p class="que">Agrupa instrucciones con un nombre para reutilizarlas. local hace que una variable solo exista adentro.</p><code class="ej">mostrar_ayuda(){ echo &quot;Uso: $0 &lt;directorio_origen&gt;&quot;; }</code></li>
+<li><button class="cmd" type="button" data-copiar="for archivo in &quot;$origen&quot;/*; do echo &quot;$archivo&quot;; done">for</button><p class="que">Repite instrucciones por cada elemento de una lista, por ejemplo cada archivo de una carpeta.</p><code class="ej">for archivo in &quot;$origen&quot;/*; do echo &quot;$archivo&quot;; done</code></li>
+<li><button class="cmd" type="button" data-copiar="for i in {1..5}; do echo &quot;Vuelta $i&quot;; done">for con rango</button><p class="que">Repite contando de un número a otro.</p><code class="ej">for i in {1..5}; do echo &quot;Vuelta $i&quot;; done</code></li>
+<li><button class="cmd" type="button" data-copiar="while true; do read -p 'Opción [1-3]: ' op; done">while</button><p class="que">Repite mientras se cumpla una condición; lo usamos para el menú de respaldo.</p><code class="ej">while true; do read -p 'Opción [1-3]: ' op; done</code></li>
+<li><button class="cmd" type="button" data-copiar="[ &quot;$op&quot; = 3 ] &amp;&amp; break">break</button><p class="que">Sale de un ciclo antes de que termine.</p><code class="ej">[ &quot;$op&quot; = 3 ] &amp;&amp; break</code></li>
+<li><button class="cmd" type="button" data-copiar="if [ -f &quot;$archivo&quot; ]; then echo sí; fi">if [ -f ]</button><p class="que">Revisa una condición. -f pregunta si la ruta es un archivo normal.</p><code class="ej">if [ -f &quot;$archivo&quot; ]; then echo sí; fi</code></li>
+<li><button class="cmd" type="button" data-copiar="[ -d logs ] || mkdir logs">[ -d ] y [ -e ]</button><p class="que">-d pregunta si es carpeta; -e, si existe cualquier cosa con ese nombre.</p><code class="ej">[ -d logs ] || mkdir logs</code></li>
+<li><button class="cmd" type="button" data-copiar="if [ &quot;$edad&quot; -ge 18 ]; then echo mayor; fi">-eq, -lt, -gt</button><p class="que">Comparan números: igual, menor que, mayor que.</p><code class="ej">if [ &quot;$edad&quot; -ge 18 ]; then echo mayor; fi</code></li>
+<li><button class="cmd" type="button" data-copiar="if [ -z &quot;$nombre&quot; ]; then echo 'Falta el nombre'; fi">= y -z</button><p class="que">Comparan texto: = si son iguales, -z si viene vacío.</p><code class="ej">if [ -z &quot;$nombre&quot; ]; then echo 'Falta el nombre'; fi</code></li>
+<li><button class="cmd" type="button" data-copiar="case &quot;${archivo##*.}&quot; in txt|md) echo texto ;; *) echo otro ;; esac">case</button><p class="que">Elige qué hacer según un valor, como la extensión de un archivo o la opción de un menú.</p><code class="ej">case &quot;${archivo##*.}&quot; in txt|md) echo texto ;; *) echo otro ;; esac</code></li>
+<li><button class="cmd" type="button" data-copiar="echo &quot;${archivo##*.}&quot;">${var##*.}</button><p class="que">Corta todo lo que hay antes del último punto; sirve para sacar la extensión.</p><code class="ej">echo &quot;${archivo##*.}&quot;</code></li>
+<li><button class="cmd" type="button" data-copiar="basename /home/spartabaldo/weas/notas.md">basename y dirname</button><p class="que">basename deja solo el nombre del archivo; dirname deja solo la carpeta.</p><code class="ej">basename /home/spartabaldo/weas/notas.md</code></li>
+<li><button class="cmd" type="button" data-copiar="frutas=(uva pera); echo &quot;${frutas[0]}&quot;">arreglos</button><p class="que">Guardan varios valores en una sola variable.</p><code class="ej">frutas=(uva pera); echo &quot;${frutas[0]}&quot;</code></li>
+<li><button class="cmd" type="button" data-copiar="export EDITOR=nano">export</button><p class="que">Hace que una variable la vean también los programas que abras desde ahí.</p><code class="ej">export EDITOR=nano</code></li>
+<li><button class="cmd" type="button" data-copiar="alias ll='ls -lah'">alias</button><p class="que">Crea un atajo para un comando largo. Se guarda en ~/.zshrc o ~/.bashrc.</p><code class="ej">alias ll='ls -lah'</code></li>
+<li><button class="cmd" type="button" data-copiar="source ~/.zshrc">source</button><p class="que">Vuelve a leer un archivo de configuración sin cerrar la terminal.</p><code class="ej">source ~/.zshrc</code></li>
+<li><button class="cmd" type="button" data-copiar="date '+%d/%m/%Y %H:%M'">date</button><p class="que">Muestra la fecha y la hora, con el formato que le pidas.</p><code class="ej">date '+%d/%m/%Y %H:%M'</code></li>
+<li><button class="cmd" type="button" data-copiar="sleep 2">sleep</button><p class="que">Hace una pausa de los segundos que le digas.</p><code class="ej">sleep 2</code></li>
+<li><button class="cmd" type="button" data-copiar="0 8 * * * /home/spartabaldo/weas/Scripts/respaldo.sh">crontab -e</button><p class="que">Programa un script para que corra solo cada cierto tiempo.</p><code class="ej">0 8 * * * /home/spartabaldo/weas/Scripts/respaldo.sh</code></li>
+</ol></section>
+<section><h2><small>3</small>Sistema, usuarios y paquetes</h2><ol>
+<li><button class="cmd" type="button" data-copiar="sudo apt update">sudo</button><p class="que">Corre un comando con permisos de administrador.</p><code class="ej">sudo apt update</code></li>
+<li><button class="cmd" type="button" data-copiar="su - spartabaldo">su</button><p class="que">Cambia a otro usuario; sin nombre cambia a root.</p><code class="ej">su - spartabaldo</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo apt install -y lynis">apt update / install</button><p class="que">Actualiza la lista de paquetes e instala programas.</p><code class="ej">sudo apt install -y lynis</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo apt upgrade -y">apt upgrade</button><p class="que">Actualiza los programas que ya tienes instalados.</p><code class="ej">sudo apt upgrade -y</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo apt remove cowsay">apt remove</button><p class="que">Desinstala un programa.</p><code class="ej">sudo apt remove cowsay</code></li>
+<li><button class="cmd" type="button" data-copiar="apt show nginx">apt search / show</button><p class="que">Busca paquetes por nombre o muestra la información de uno.</p><code class="ej">apt show nginx</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo apt --fix-broken install">apt --fix-broken install</button><p class="que">Intenta reparar dependencias rotas antes de instalar algo más.</p><code class="ej">sudo apt --fix-broken install</code></li>
+<li><button class="cmd" type="button" data-copiar="dpkg -l | grep bind9">dpkg -l</button><p class="que">Lista los paquetes instalados.</p><code class="ej">dpkg -l | grep bind9</code></li>
+<li><button class="cmd" type="button" data-copiar="curl -fsSL URL | sudo gpg --dearmor -o /usr/share/keyrings/cisofy.gpg">gpg --dearmor</button><p class="que">Convierte la llave de un repositorio al formato que usa apt.</p><code class="ej">curl -fsSL URL | sudo gpg --dearmor -o /usr/share/keyrings/cisofy.gpg</code></li>
+<li><button class="cmd" type="button" data-copiar="echo 'deb ...' | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list">tee</button><p class="que">Escribe en un archivo (aunque sea de root) y muestra lo mismo en pantalla.</p><code class="ej">echo 'deb ...' | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo lynis audit system">lynis audit system</button><p class="que">Audita la seguridad del sistema y guarda el reporte en /var/log.</p><code class="ej">sudo lynis audit system</code></li>
+<li><button class="cmd" type="button" data-copiar="id spartabaldo">id y groups</button><p class="que">Muestran tu usuario, tu número de usuario y a qué grupos perteneces.</p><code class="ej">id spartabaldo</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo adduser invitado">useradd / adduser</button><p class="que">Crean un usuario nuevo; adduser pregunta los datos paso a paso.</p><code class="ej">sudo adduser invitado</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo passwd invitado">passwd</button><p class="que">Cambia la contraseña de un usuario.</p><code class="ej">sudo passwd invitado</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo usermod -aG sudo invitado">usermod -aG</button><p class="que">Agrega un usuario a un grupo sin sacarlo de los demás.</p><code class="ej">sudo usermod -aG sudo invitado</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo userdel -r invitado">userdel -r</button><p class="que">Borra un usuario junto con su carpeta personal.</p><code class="ej">sudo userdel -r invitado</code></li>
+<li><button class="cmd" type="button" data-copiar="ps aux | grep nginx">ps aux</button><p class="que">Lista todos los procesos que están corriendo.</p><code class="ej">ps aux | grep nginx</code></li>
+<li><button class="cmd" type="button" data-copiar="htop">top / htop</button><p class="que">Muestran en vivo qué procesos usan más CPU y memoria. q para salir.</p><code class="ej">htop</code></li>
+<li><button class="cmd" type="button" data-copiar="kill 1234">kill</button><p class="que">Detiene un proceso usando su número (PID). -9 lo fuerza.</p><code class="ej">kill 1234</code></li>
+<li><button class="cmd" type="button" data-copiar="pkill firefox">pkill</button><p class="que">Detiene procesos usando su nombre.</p><code class="ej">pkill firefox</code></li>
+<li><button class="cmd" type="button" data-copiar="sleep 60 &amp; jobs">&amp; , jobs, fg y bg</button><p class="que">&amp; manda un comando al fondo; jobs lista, fg lo trae al frente y bg lo sigue en el fondo.</p><code class="ej">sleep 60 &amp; jobs</code></li>
+<li><button class="cmd" type="button" data-copiar="df -h">df -h</button><p class="que">Muestra cuánto espacio libre queda en cada disco.</p><code class="ej">df -h</code></li>
+<li><button class="cmd" type="button" data-copiar="du -sh ~/weas">du -sh</button><p class="que">Dice cuánto pesa una carpeta.</p><code class="ej">du -sh ~/weas</code></li>
+<li><button class="cmd" type="button" data-copiar="free -h">free -h</button><p class="que">Muestra cuánta memoria RAM se está usando.</p><code class="ej">free -h</code></li>
+<li><button class="cmd" type="button" data-copiar="uname -a">uname -a</button><p class="que">Muestra la versión del kernel y el tipo de sistema.</p><code class="ej">uname -a</code></li>
+<li><button class="cmd" type="button" data-copiar="uptime">uptime</button><p class="que">Cuánto tiempo lleva prendida la máquina y qué tan cargada está.</p><code class="ej">uptime</code></li>
+<li><button class="cmd" type="button" data-copiar="lsblk">lsblk</button><p class="que">Lista los discos y sus particiones.</p><code class="ej">lsblk</code></li>
+<li><button class="cmd" type="button" data-copiar="which nginx">which</button><p class="que">Dice en qué carpeta está el programa que se ejecuta con ese nombre.</p><code class="ej">which nginx</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo journalctl -u named -n 30">journalctl</button><p class="que">Muestra los registros (logs) del sistema y de cada servicio.</p><code class="ej">sudo journalctl -u named -n 30</code></li>
+<li><button class="cmd" type="button" data-copiar="tar -czf respaldo.tar.gz ~/weas/Scripts">tar</button><p class="que">Junta carpetas en un solo archivo y lo comprime (c crea, x extrae, z comprime).</p><code class="ej">tar -czf respaldo.tar.gz ~/weas/Scripts</code></li>
+<li><button class="cmd" type="button" data-copiar="unzip practica.zip -d practica">zip / unzip</button><p class="que">Comprimen y descomprimen archivos .zip.</p><code class="ej">unzip practica.zip -d practica</code></li>
+<li><button class="cmd" type="button" data-copiar="sha256sum dns.sh">sha256sum</button><p class="que">Calcula la huella de un archivo para revisar que no cambió.</p><code class="ej">sha256sum dns.sh</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo ufw allow 22/tcp">ufw</button><p class="que">Firewall sencillo: permite o bloquea puertos.</p><code class="ej">sudo ufw allow 22/tcp</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo shutdown now">reboot / shutdown</button><p class="que">Reinician o apagan la máquina.</p><code class="ej">sudo shutdown now</code></li>
+</ol></section>
+<section><h2><small>4</small>DNS, web y SSH</h2><ol>
+<li><button class="cmd" type="button" data-copiar="hostname -I">hostname</button><p class="que">Muestra el nombre de la máquina; con -I, sus IPs.</p><code class="ej">hostname -I</code></li>
+<li><button class="cmd" type="button" data-copiar="ip -br -4 address">ip -br address</button><p class="que">Muestra cada tarjeta de red con su IP en una línea.</p><code class="ej">ip -br -4 address</code></li>
+<li><button class="cmd" type="button" data-copiar="ip -4 route show default">ip route</button><p class="que">Muestra la ruta por defecto, o sea el gateway de la red.</p><code class="ej">ip -4 route show default</code></li>
+<li><button class="cmd" type="button" data-copiar="nmcli connection show">nmcli</button><p class="que">Configura la red de NetworkManager; aquí se usa para dejar la IP fija.</p><code class="ej">nmcli connection show</code></li>
+<li><button class="cmd" type="button" data-copiar="ping -c 4 10.10.24.199">ping</button><p class="que">Comprueba si otra máquina responde por la red.</p><code class="ej">ping -c 4 10.10.24.199</code></li>
+<li><button class="cmd" type="button" data-copiar="traceroute 10.10.24.1">traceroute</button><p class="que">Muestra por qué equipos pasa un paquete hasta llegar a su destino.</p><code class="ej">traceroute 10.10.24.1</code></li>
+<li><button class="cmd" type="button" data-copiar="ss -lnut">ss -lnut</button><p class="que">Lista los puertos abiertos: 53 es el DNS, 80 la web y 22 SSH.</p><code class="ej">ss -lnut</code></li>
+<li><button class="cmd" type="button" data-copiar="cat /etc/hosts">/etc/hosts</button><p class="que">Archivo donde se le dice a la máquina a qué IP va un nombre, sin preguntar al DNS.</p><code class="ej">cat /etc/hosts</code></li>
+<li><button class="cmd" type="button" data-copiar="cat /etc/resolv.conf">/etc/resolv.conf</button><p class="que">Archivo que dice a qué servidor DNS le pregunta la máquina.</p><code class="ej">cat /etc/resolv.conf</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo systemctl enable --now ssh">systemctl</button><p class="que">Arranca, reinicia, habilita o revisa servicios como named, nginx y ssh.</p><code class="ej">sudo systemctl enable --now ssh</code></li>
+<li><button class="cmd" type="button" data-copiar="systemctl status named">systemctl status</button><p class="que">Muestra si un servicio está corriendo y sus últimos mensajes.</p><code class="ej">systemctl status named</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo named-checkconf -z">named-checkconf</button><p class="que">Revisa que la configuración de BIND9 no tenga errores.</p><code class="ej">sudo named-checkconf -z</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo named-checkzone spartabaldo.linux /etc/bind/db.spartabaldo.linux">named-checkzone</button><p class="que">Revisa que el archivo de zona del dominio esté bien escrito.</p><code class="ej">sudo named-checkzone spartabaldo.linux /etc/bind/db.spartabaldo.linux</code></li>
+<li><button class="cmd" type="button" data-copiar="dig @10.10.24.199 spartabaldo.linux +short">dig</button><p class="que">Pregunta a un servidor DNS a qué IP apunta un nombre.</p><code class="ej">dig @10.10.24.199 spartabaldo.linux +short</code></li>
+<li><button class="cmd" type="button" data-copiar="dig @10.10.24.199 -x 10.10.24.199 +short">dig -x</button><p class="que">Consulta inversa: a qué nombre pertenece una IP.</p><code class="ej">dig @10.10.24.199 -x 10.10.24.199 +short</code></li>
+<li><button class="cmd" type="button" data-copiar="nslookup spartabaldo.linux 10.10.24.199">nslookup</button><p class="que">Hace lo mismo que dig con una salida más sencilla; sirve en Windows.</p><code class="ej">nslookup spartabaldo.linux 10.10.24.199</code></li>
+<li><button class="cmd" type="button" data-copiar="host spartabaldo.linux 10.10.24.199">host</button><p class="que">Otra forma rápida de preguntar la IP de un nombre.</p><code class="ej">host spartabaldo.linux 10.10.24.199</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo nginx -t &amp;&amp; sudo systemctl reload nginx">nginx -t</button><p class="que">Revisa que la configuración de nginx esté bien antes de recargarla.</p><code class="ej">sudo nginx -t &amp;&amp; sudo systemctl reload nginx</code></li>
+<li><button class="cmd" type="button" data-copiar="sudo ln -s /etc/nginx/sites-available/spartabaldo.linux /etc/nginx/sites-enabled/">ln -s (nginx)</button><p class="que">Crea un enlace; así se activa un sitio de nginx.</p><code class="ej">sudo ln -s /etc/nginx/sites-available/spartabaldo.linux /etc/nginx/sites-enabled/</code></li>
+<li><button class="cmd" type="button" data-copiar="curl -I http://spartabaldo.linux">curl</button><p class="que">Pide una página web desde la terminal. -I muestra solo los encabezados.</p><code class="ej">curl -I http://spartabaldo.linux</code></li>
+<li><button class="cmd" type="button" data-copiar="wget http://spartabaldo.linux/comandos.txt">wget</button><p class="que">Descarga un archivo de una URL.</p><code class="ej">wget http://spartabaldo.linux/comandos.txt</code></li>
+<li><button class="cmd" type="button" data-copiar="ssh spartabaldo@10.10.24.199 &quot;ls -lah /var/www/spartabaldo.linux&quot;">ssh</button><p class="que">Abre una sesión en otra máquina o le manda un solo comando y regresa.</p><code class="ej">ssh spartabaldo@10.10.24.199 &quot;ls -lah /var/www/spartabaldo.linux&quot;</code></li>
+<li><button class="cmd" type="button" data-copiar="ssh-keygen -t ed25519">ssh-keygen</button><p class="que">Crea un par de llaves para entrar por SSH sin escribir la contraseña.</p><code class="ej">ssh-keygen -t ed25519</code></li>
+<li><button class="cmd" type="button" data-copiar="ssh-copy-id spartabaldo@10.10.24.199">ssh-copy-id</button><p class="que">Copia tu llave pública al servidor para que te reconozca.</p><code class="ej">ssh-copy-id spartabaldo@10.10.24.199</code></li>
+<li><button class="cmd" type="button" data-copiar="scp spartabaldo@10.10.24.199:/var/www/spartabaldo.linux/comandos.txt .">scp</button><p class="que">Copia archivos entre máquinas usando SSH.</p><code class="ej">scp spartabaldo@10.10.24.199:/var/www/spartabaldo.linux/comandos.txt .</code></li>
+<li><button class="cmd" type="button" data-copiar="rsync -av ~/weas/ spartabaldo@10.10.24.199:/home/spartabaldo/respaldo/">rsync</button><p class="que">Copia o sincroniza carpetas entre máquinas; solo manda lo que cambió.</p><code class="ej">rsync -av ~/weas/ spartabaldo@10.10.24.199:/home/spartabaldo/respaldo/</code></li>
+</ol></section>
+<p class="vacio oculto" id="vacio">Ningún comando coincide. Prueba con otra palabra, como «archivo» o «red».</p>
+<footer>
+<p>Esta página vive en <code>/var/www/spartabaldo.linux</code>. Para revisar la carpeta desde otra máquina:<br>
+<code>ssh spartabaldo@10.10.24.199 "ls -lah /var/www/spartabaldo.linux"</code></p>
+</footer>
+</div>
+<div class="aviso" id="aviso" role="status" aria-live="polite"></div>
+<script>
+const buscar=document.getElementById('buscar');
+const filas=[...document.querySelectorAll('li')];
+const secciones=[...document.querySelectorAll('section')];
+const resumen=document.getElementById('resumen');
+const textoOriginal=resumen.textContent;
+buscar.addEventListener('input',()=>{
+  const q=buscar.value.trim().toLowerCase();
+  let visibles=0;
+  filas.forEach(li=>{
+    const btn=li.querySelector('.cmd');
+    const nombre=btn.dataset.nombre ??= btn.textContent;
+    const ok=!q||li.textContent.toLowerCase().includes(q);
+    li.classList.toggle('oculto',!ok);
+    if(ok)visibles++;
+    const i=q?nombre.toLowerCase().indexOf(q):-1;
+    btn.textContent='';
+    if(i<0){btn.textContent=nombre}
+    else{
+      btn.append(nombre.slice(0,i));
+      const m=document.createElement('mark');m.textContent=nombre.slice(i,i+q.length);btn.append(m);
+      btn.append(nombre.slice(i+q.length));
+    }
+  });
+  secciones.forEach(s=>s.classList.toggle('oculto',!s.querySelector('li:not(.oculto)')));
+  document.getElementById('vacio').classList.toggle('oculto',visibles>0);
+  resumen.textContent=q?`${visibles} coincidencias para «${buscar.value.trim()}».`:textoOriginal;
+});
+const aviso=document.getElementById('aviso');
+document.addEventListener('click',e=>{
+  const b=e.target.closest('.cmd');if(!b)return;
+  const t=b.dataset.copiar;
+  const listo=()=>{aviso.textContent='Copiado: '+t;aviso.classList.add('ver');setTimeout(()=>aviso.classList.remove('ver'),1600)};
+  if(navigator.clipboard&&window.isSecureContext){navigator.clipboard.writeText(t).then(listo)}
+  else{const a=document.createElement('textarea');a.value=t;document.body.append(a);a.select();document.execCommand('copy');a.remove();listo()}
+});
+</script>
+</body>
+</html>

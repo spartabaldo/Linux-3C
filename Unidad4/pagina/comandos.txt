@@ -1,0 +1,272 @@
+COMANDOS VISTOS EN CLASE - Sistema Operativo Linux 3C
+Dominio: spartabaldo.linux   IP: 10.10.24.199   Generado: 11/11/2026 19:30
+
+== Unidad 1: Terminal y archivos ==
+  pwd                        Muestra la ruta de la carpeta donde estás parado.
+                             $ pwd
+  whoami                     Dice con qué usuario tienes la sesión abierta.
+                             $ whoami
+  ls                         Lista lo que hay en la carpeta actual.
+                             $ ls
+  ls -lah                    Lista todo, incluidos ocultos, con permisos, dueño y tamaño legible.
+                             $ ls -lah docs
+  cd                         Cambia de carpeta. Con .. sube un nivel y con ~ vuelve a tu home.
+                             $ cd ~/laboratorio-cli
+  tree                       Dibuja una carpeta y todo lo que tiene adentro en forma de árbol.
+                             $ tree ~/laboratorio-cli
+  mkdir -p                   Crea carpetas, incluidas las intermedias que falten. Con llaves crea varias de un jalón.
+                             $ mkdir -p ~/laboratorio-cli/{docs,src,logs}
+  touch                      Crea archivos vacíos (o actualiza su fecha si ya existen).
+                             $ touch docs/{guia,notas}.md src/{main,test}.py README.txt
+  cp                         Copia archivos. Con -r copia carpetas completas.
+                             $ cp -r docs docs_respaldo
+  mv                         Mueve o renombra archivos y carpetas.
+                             $ mv notas.md apuntes.md
+  rm                         Borra archivos. Con -r borra carpetas; no hay papelera, así que cuidado.
+                             $ rm -r docs_respaldo
+  rmdir                      Borra una carpeta solo si está vacía.
+                             $ rmdir carpeta_vacia
+  ln -s                      Crea un acceso directo (enlace simbólico) a otro archivo o carpeta.
+                             $ ln -s ~/laboratorio-cli/logs ~/logs
+  file                       Dice qué tipo de archivo es, sin importar su extensión.
+                             $ file README.txt
+  stat                       Muestra todos los datos de un archivo: tamaño, permisos y fechas.
+                             $ stat README.txt
+  printf + >                 Escribe texto con saltos de línea y lo manda a un archivo, sobrescribiéndolo.
+                             $ printf 'error\nok\nerror\n' > logs/app.log
+  >>                         Agrega texto al final de un archivo sin borrar lo que ya tenía.
+                             $ echo 'ok' >> logs/app.log
+  2>                         Manda los mensajes de error a un archivo aparte.
+                             $ ls carpeta_que_no_existe 2> errores.txt
+  | (tubería)               Pasa la salida de un comando como entrada del siguiente.
+                             $ cat logs/app.log | grep error
+  && y ||                    && corre el segundo comando si el primero salió bien; || solo si falló.
+                             $ mkdir pruebas && cd pruebas
+  nano                       Editor de texto dentro de la terminal. Ctrl+O guarda, Ctrl+X sale.
+                             $ nano logs/app.log
+  cat                        Imprime el contenido de un archivo en la terminal.
+                             $ cat logs/app.log
+  less                       Abre un archivo largo para leerlo por partes. q sale, / busca.
+                             $ less /var/log/syslog
+  head y tail                Muestran las primeras o las últimas líneas de un archivo.
+                             $ tail -n 20 logs/app.log
+  tail -f                    Sigue un archivo en vivo y muestra las líneas nuevas conforme llegan.
+                             $ sudo tail -f /var/log/nginx/access.log
+  wc                         Cuenta líneas, palabras y caracteres.
+                             $ wc -l logs/app.log
+  grep                       Busca texto dentro de archivos. -i ignora mayúsculas, -r busca en carpetas, -n da el número de línea.
+                             $ grep -n error logs/app.log
+  sort y uniq                Ordenan líneas y quitan las repetidas. uniq -c además las cuenta.
+                             $ sort logs/app.log | uniq -c
+  cut                        Saca una columna de cada línea usando un separador.
+                             $ cut -d: -f1 /etc/passwd
+  diff                       Compara dos archivos y muestra en qué líneas son distintos.
+                             $ diff guia.md notas.md
+  find                       Busca archivos por nombre, tipo, tamaño o fecha.
+                             $ find ~ -name '*.sh'
+  chmod                      Cambia permisos. 7 = rwx, 6 = rw-, 5 = r-x, 4 = r--; en orden dueño, grupo, otros.
+                             $ chmod 775 logs && chmod 664 README.txt
+  chmod u+x                  Cambia permisos con letras: u dueño, g grupo, o otros; + da y - quita.
+                             $ chmod g-w README.txt
+  chown                      Cambia el dueño (y el grupo) de un archivo.
+                             $ sudo chown spartabaldo:spartabaldo README.txt
+  umask                      Muestra qué permisos se le quitan por defecto a los archivos nuevos.
+                             $ umask
+  man                        Abre el manual de cualquier comando. q para salir.
+                             $ man ls
+  --help                     Muestra una ayuda corta del comando, más rápida que man.
+                             $ ls --help
+  history                    Lista los comandos que has escrito. !número repite uno.
+                             $ history | tail
+  clear                      Limpia la pantalla de la terminal (o Ctrl+L).
+                             $ clear
+
+== Unidad 2: Scripts en bash ==
+  #!/bin/bash                Primera línea del script: le dice al sistema qué intérprete lo ejecuta.
+                             $ #!/bin/bash
+  chmod +x y ./              Le da permiso de ejecución al script y luego lo corre desde la carpeta actual.
+                             $ chmod +x saludo.sh && ./saludo.sh
+  bash script.sh             Corre un script sin darle permiso de ejecución.
+                             $ bash saludo.sh
+  bash -n y -x               -n revisa la sintaxis sin ejecutar; -x muestra cada línea conforme corre.
+                             $ bash -x saludo.sh
+  echo                       Imprime texto o el valor de una variable.
+                             $ echo "Hola $nombre! Bienvenido a Linux!"
+  variable=valor             Guarda un valor. Sin espacios alrededor del =, y se lee con $.
+                             $ nombre="Jonathan"; echo $nombre
+  $(comando)                 Guarda en una variable lo que imprime un comando.
+                             $ hoy=$(date +%d/%m/%Y)
+  read -p                    Pide un dato al usuario mostrando un mensaje y lo guarda en una variable.
+                             $ read -p "¿Cuál es tu nombre? " nombre
+  ${var:-0}                  Usa el valor de la variable o, si viene vacía, un valor por defecto.
+                             $ base=${base:-0}
+  $(( ))                     Hace operaciones aritméticas con enteros.
+                             $ area=$((base*altura))
+  $0, $1 y $#                $0 es el nombre del script, $1 el primer argumento y $# cuántos argumentos llegaron.
+                             $ ./listado.sh /home/spartabaldo/weas/Scripts
+  $?                         Guarda cómo terminó el último comando: 0 es que salió bien.
+                             $ ls /noexiste; echo $?
+  exit                       Termina el script y devuelve un código; 0 es éxito.
+                             $ exit 1
+  función()                 Agrupa instrucciones con un nombre para reutilizarlas. local hace que una variable solo exista adentro.
+                             $ mostrar_ayuda(){ echo "Uso: $0 <directorio_origen>"; }
+  for                        Repite instrucciones por cada elemento de una lista, por ejemplo cada archivo de una carpeta.
+                             $ for archivo in "$origen"/*; do echo "$archivo"; done
+  for con rango              Repite contando de un número a otro.
+                             $ for i in {1..5}; do echo "Vuelta $i"; done
+  while                      Repite mientras se cumpla una condición; lo usamos para el menú de respaldo.
+                             $ while true; do read -p 'Opción [1-3]: ' op; done
+  break                      Sale de un ciclo antes de que termine.
+                             $ [ "$op" = 3 ] && break
+  if [ -f ]                  Revisa una condición. -f pregunta si la ruta es un archivo normal.
+                             $ if [ -f "$archivo" ]; then echo sí; fi
+  [ -d ] y [ -e ]            -d pregunta si es carpeta; -e, si existe cualquier cosa con ese nombre.
+                             $ [ -d logs ] || mkdir logs
+  -eq, -lt, -gt              Comparan números: igual, menor que, mayor que.
+                             $ if [ "$edad" -ge 18 ]; then echo mayor; fi
+  = y -z                     Comparan texto: = si son iguales, -z si viene vacío.
+                             $ if [ -z "$nombre" ]; then echo 'Falta el nombre'; fi
+  case                       Elige qué hacer según un valor, como la extensión de un archivo o la opción de un menú.
+                             $ case "${archivo##*.}" in txt|md) echo texto ;; *) echo otro ;; esac
+  ${var##*.}                 Corta todo lo que hay antes del último punto; sirve para sacar la extensión.
+                             $ echo "${archivo##*.}"
+  basename y dirname         basename deja solo el nombre del archivo; dirname deja solo la carpeta.
+                             $ basename /home/spartabaldo/weas/notas.md
+  arreglos                   Guardan varios valores en una sola variable.
+                             $ frutas=(uva pera); echo "${frutas[0]}"
+  export                     Hace que una variable la vean también los programas que abras desde ahí.
+                             $ export EDITOR=nano
+  alias                      Crea un atajo para un comando largo. Se guarda en ~/.zshrc o ~/.bashrc.
+                             $ alias ll='ls -lah'
+  source                     Vuelve a leer un archivo de configuración sin cerrar la terminal.
+                             $ source ~/.zshrc
+  date                       Muestra la fecha y la hora, con el formato que le pidas.
+                             $ date '+%d/%m/%Y %H:%M'
+  sleep                      Hace una pausa de los segundos que le digas.
+                             $ sleep 2
+  crontab -e                 Programa un script para que corra solo cada cierto tiempo.
+                             $ 0 8 * * * /home/spartabaldo/weas/Scripts/respaldo.sh
+
+== Unidad 3: Sistema, usuarios y paquetes ==
+  sudo                       Corre un comando con permisos de administrador.
+                             $ sudo apt update
+  su                         Cambia a otro usuario; sin nombre cambia a root.
+                             $ su - spartabaldo
+  apt update / install       Actualiza la lista de paquetes e instala programas.
+                             $ sudo apt install -y lynis
+  apt upgrade                Actualiza los programas que ya tienes instalados.
+                             $ sudo apt upgrade -y
+  apt remove                 Desinstala un programa.
+                             $ sudo apt remove cowsay
+  apt search / show          Busca paquetes por nombre o muestra la información de uno.
+                             $ apt show nginx
+  apt --fix-broken install   Intenta reparar dependencias rotas antes de instalar algo más.
+                             $ sudo apt --fix-broken install
+  dpkg -l                    Lista los paquetes instalados.
+                             $ dpkg -l | grep bind9
+  gpg --dearmor              Convierte la llave de un repositorio al formato que usa apt.
+                             $ curl -fsSL URL | sudo gpg --dearmor -o /usr/share/keyrings/cisofy.gpg
+  tee                        Escribe en un archivo (aunque sea de root) y muestra lo mismo en pantalla.
+                             $ echo 'deb ...' | sudo tee /etc/apt/sources.list.d/cisofy-lynis.list
+  lynis audit system         Audita la seguridad del sistema y guarda el reporte en /var/log.
+                             $ sudo lynis audit system
+  id y groups                Muestran tu usuario, tu número de usuario y a qué grupos perteneces.
+                             $ id spartabaldo
+  useradd / adduser          Crean un usuario nuevo; adduser pregunta los datos paso a paso.
+                             $ sudo adduser invitado
+  passwd                     Cambia la contraseña de un usuario.
+                             $ sudo passwd invitado
+  usermod -aG                Agrega un usuario a un grupo sin sacarlo de los demás.
+                             $ sudo usermod -aG sudo invitado
+  userdel -r                 Borra un usuario junto con su carpeta personal.
+                             $ sudo userdel -r invitado
+  ps aux                     Lista todos los procesos que están corriendo.
+                             $ ps aux | grep nginx
+  top / htop                 Muestran en vivo qué procesos usan más CPU y memoria. q para salir.
+                             $ htop
+  kill                       Detiene un proceso usando su número (PID). -9 lo fuerza.
+                             $ kill 1234
+  pkill                      Detiene procesos usando su nombre.
+                             $ pkill firefox
+  & , jobs, fg y bg          & manda un comando al fondo; jobs lista, fg lo trae al frente y bg lo sigue en el fondo.
+                             $ sleep 60 & jobs
+  df -h                      Muestra cuánto espacio libre queda en cada disco.
+                             $ df -h
+  du -sh                     Dice cuánto pesa una carpeta.
+                             $ du -sh ~/weas
+  free -h                    Muestra cuánta memoria RAM se está usando.
+                             $ free -h
+  uname -a                   Muestra la versión del kernel y el tipo de sistema.
+                             $ uname -a
+  uptime                     Cuánto tiempo lleva prendida la máquina y qué tan cargada está.
+                             $ uptime
+  lsblk                      Lista los discos y sus particiones.
+                             $ lsblk
+  which                      Dice en qué carpeta está el programa que se ejecuta con ese nombre.
+                             $ which nginx
+  journalctl                 Muestra los registros (logs) del sistema y de cada servicio.
+                             $ sudo journalctl -u named -n 30
+  tar                        Junta carpetas en un solo archivo y lo comprime (c crea, x extrae, z comprime).
+                             $ tar -czf respaldo.tar.gz ~/weas/Scripts
+  zip / unzip                Comprimen y descomprimen archivos .zip.
+                             $ unzip practica.zip -d practica
+  sha256sum                  Calcula la huella de un archivo para revisar que no cambió.
+                             $ sha256sum dns.sh
+  ufw                        Firewall sencillo: permite o bloquea puertos.
+                             $ sudo ufw allow 22/tcp
+  reboot / shutdown          Reinician o apagan la máquina.
+                             $ sudo shutdown now
+
+== Unidad 4: DNS, web y SSH ==
+  hostname                   Muestra el nombre de la máquina; con -I, sus IPs.
+                             $ hostname -I
+  ip -br address             Muestra cada tarjeta de red con su IP en una línea.
+                             $ ip -br -4 address
+  ip route                   Muestra la ruta por defecto, o sea el gateway de la red.
+                             $ ip -4 route show default
+  nmcli                      Configura la red de NetworkManager; aquí se usa para dejar la IP fija.
+                             $ nmcli connection show
+  ping                       Comprueba si otra máquina responde por la red.
+                             $ ping -c 4 10.10.24.199
+  traceroute                 Muestra por qué equipos pasa un paquete hasta llegar a su destino.
+                             $ traceroute 10.10.24.1
+  ss -lnut                   Lista los puertos abiertos: 53 es el DNS, 80 la web y 22 SSH.
+                             $ ss -lnut
+  /etc/hosts                 Archivo donde se le dice a la máquina a qué IP va un nombre, sin preguntar al DNS.
+                             $ cat /etc/hosts
+  /etc/resolv.conf           Archivo que dice a qué servidor DNS le pregunta la máquina.
+                             $ cat /etc/resolv.conf
+  systemctl                  Arranca, reinicia, habilita o revisa servicios como named, nginx y ssh.
+                             $ sudo systemctl enable --now ssh
+  systemctl status           Muestra si un servicio está corriendo y sus últimos mensajes.
+                             $ systemctl status named
+  named-checkconf            Revisa que la configuración de BIND9 no tenga errores.
+                             $ sudo named-checkconf -z
+  named-checkzone            Revisa que el archivo de zona del dominio esté bien escrito.
+                             $ sudo named-checkzone spartabaldo.linux /etc/bind/db.spartabaldo.linux
+  dig                        Pregunta a un servidor DNS a qué IP apunta un nombre.
+                             $ dig @10.10.24.199 spartabaldo.linux +short
+  dig -x                     Consulta inversa: a qué nombre pertenece una IP.
+                             $ dig @10.10.24.199 -x 10.10.24.199 +short
+  nslookup                   Hace lo mismo que dig con una salida más sencilla; sirve en Windows.
+                             $ nslookup spartabaldo.linux 10.10.24.199
+  host                       Otra forma rápida de preguntar la IP de un nombre.
+                             $ host spartabaldo.linux 10.10.24.199
+  nginx -t                   Revisa que la configuración de nginx esté bien antes de recargarla.
+                             $ sudo nginx -t && sudo systemctl reload nginx
+  ln -s (nginx)              Crea un enlace; así se activa un sitio de nginx.
+                             $ sudo ln -s /etc/nginx/sites-available/spartabaldo.linux /etc/nginx/sites-enabled/
+  curl                       Pide una página web desde la terminal. -I muestra solo los encabezados.
+                             $ curl -I http://spartabaldo.linux
+  wget                       Descarga un archivo de una URL.
+                             $ wget http://spartabaldo.linux/comandos.txt
+  ssh                        Abre una sesión en otra máquina o le manda un solo comando y regresa.
+                             $ ssh spartabaldo@10.10.24.199 "ls -lah /var/www/spartabaldo.linux"
+  ssh-keygen                 Crea un par de llaves para entrar por SSH sin escribir la contraseña.
+                             $ ssh-keygen -t ed25519
+  ssh-copy-id                Copia tu llave pública al servidor para que te reconozca.
+                             $ ssh-copy-id spartabaldo@10.10.24.199
+  scp                        Copia archivos entre máquinas usando SSH.
+                             $ scp spartabaldo@10.10.24.199:/var/www/spartabaldo.linux/comandos.txt .
+  rsync                      Copia o sincroniza carpetas entre máquinas; solo manda lo que cambió.
+                             $ rsync -av ~/weas/ spartabaldo@10.10.24.199:/home/spartabaldo/respaldo/
